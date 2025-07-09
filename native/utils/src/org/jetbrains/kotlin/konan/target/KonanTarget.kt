@@ -40,6 +40,7 @@ sealed class KonanTarget(override val name: String, val family: Family, val arch
     object LINUX_ARM64 : KonanTarget("linux_arm64", Family.LINUX, Architecture.ARM64)
 
     object LINUX_ARM32_HFP : KonanTarget("linux_arm32_hfp", Family.LINUX, Architecture.ARM32)
+    object XTENSA_ESP32 : KonanTarget("xtensa_esp32_elf", Family.LINUX, Architecture.XTENSA)
 
     /**
      * Removed targets. References are left just to provide a readable diagnostic message (as opposed to
@@ -83,7 +84,8 @@ sealed class KonanTarget(override val name: String, val family: Family, val arch
                 LINUX_X64,
                 MINGW_X64,
                 MACOS_X64, MACOS_ARM64,
-                LINUX_ARM64, LINUX_ARM32_HFP
+                LINUX_ARM64, LINUX_ARM32_HFP,
+                XTENSA_ESP32
             ).associateBy { it.name }
         }
 

@@ -226,6 +226,7 @@ internal constructor(
                 Architecture.X86 -> AppleArchitecture.X86
                 Architecture.ARM64 -> if (this == WATCHOS_ARM64) AppleArchitecture.ARM64_32 else AppleArchitecture.ARM64
                 Architecture.ARM32 -> AppleArchitecture.ARM32
+                Architecture.XTENSA -> error("Fat frameworks are not supported for target `${this.visibleName}`")
             }
 
     // region DSL methods.

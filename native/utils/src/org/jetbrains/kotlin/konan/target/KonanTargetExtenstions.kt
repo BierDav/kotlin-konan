@@ -26,6 +26,7 @@ fun KonanTarget.pointerBits() = when (architecture) {
     Architecture.X86 -> 32
     Architecture.ARM64 -> if (this == KonanTarget.WATCHOS_ARM64) 32 else 64
     Architecture.ARM32 -> 32
+    Architecture.XTENSA -> 32
 }
 
 fun KonanTarget.supportsLibBacktrace(): Boolean =
@@ -72,12 +73,12 @@ fun KonanTarget.supportsIosCrashLog(): Boolean = when (this) {
  * TODO: reconsider once target MIPS can do proper 64-bit load/store/CAS.
  */
 fun KonanTarget.supports64BitAtomics(): Boolean = when (architecture) {
-    Architecture.ARM32 -> false
-    Architecture.X86, Architecture.ARM64, Architecture.X64 -> true
+    Architecture.ARM32, Architecture.XTENSA -> false
+    Architecture.X86, Architecture.ARM64, Architecture.X64-> true
 } && this != KonanTarget.WATCHOS_ARM64
 
 fun KonanTarget.supportsUnalignedAccess(): Boolean = when (architecture) {
-    Architecture.ARM32 -> false
+    Architecture.ARM32, Architecture.XTENSA -> false
     Architecture.X86, Architecture.ARM64, Architecture.X64 -> true
 } && this != KonanTarget.WATCHOS_ARM64
 
