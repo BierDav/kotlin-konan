@@ -19,7 +19,7 @@ private val supportedHosts = listOf(
         KonanTarget.LINUX_X64,
         KonanTarget.MACOS_ARM64,
         KonanTarget.MACOS_X64,
-        KonanTarget.MINGW_ARM64,
+//        KonanTarget.MINGW_ARM64,
         KonanTarget.MINGW_X64
 )
 

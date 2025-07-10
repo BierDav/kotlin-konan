@@ -16,14 +16,14 @@ open class HostManager() {
     @Deprecated(level = DeprecationLevel.HIDDEN, message = "Kept for binary compatibility of Gradle plugins")
     constructor(
         subTargetProvider: SubTargetProvider = SubTargetProvider.NoSubTargets,
-        experimental: Boolean = false
+        experimental: Boolean = false,
     ) : this()
 
     @Suppress("UNUSED_PARAMETER")
     @Deprecated(level = DeprecationLevel.HIDDEN, message = "Kept for binary compatibility of Gradle plugins")
     constructor(
         distribution: Distribution,
-        experimental: Boolean = false
+        experimental: Boolean = false,
     ) : this()
 
     val targetValues: List<KonanTarget> by lazy { KonanTarget.predefinedTargets.values.toList() }
@@ -53,6 +53,7 @@ open class HostManager() {
         LINUX_ARM32_HFP,
         LINUX_ARM64,
         MINGW_X64,
+        MINGW_ARM64,
         ANDROID_X86,
         ANDROID_X64,
         ANDROID_ARM32,
@@ -77,7 +78,9 @@ open class HostManager() {
 
     val enabledByHost: Map<KonanTarget, Set<KonanTarget>> = mapOf(
         LINUX_X64 to commonTargets,
+        LINUX_ARM64 to commonTargets,
         MINGW_X64 to commonTargets,
+        MINGW_ARM64 to commonTargets,
         MACOS_X64 to commonTargets + appleTargets,
         MACOS_ARM64 to commonTargets + appleTargets
     )
@@ -121,9 +124,14 @@ open class HostManager() {
         val jniHostPlatformIncludeDir: String
             get() = when (host) {
                 MACOS_X64,
-                MACOS_ARM64 -> "darwin"
-                LINUX_X64 -> "linux"
-                MINGW_X64 -> "win32"
+                MACOS_ARM64,
+                    -> "darwin"
+                LINUX_X64,
+                LINUX_ARM64,
+                    -> "linux"
+                MINGW_X64,
+                MINGW_ARM64,
+                    -> "win32"
                 else -> throw TargetSupportException("Unknown host: $host.")
             }
 
@@ -148,7 +156,9 @@ open class HostManager() {
             Pair("osx", "x86_64") to MACOS_X64,
             Pair("osx", "aarch64") to MACOS_ARM64,
             Pair("linux", "x86_64") to LINUX_X64,
-            Pair("windows", "x86_64") to MINGW_X64
+            Pair("linux", "aarch64") to LINUX_ARM64,
+            Pair("windows", "x86_64") to MINGW_X64,
+            Pair("windows", "aarch64") to MINGW_ARM64,
         )
 
         @JvmStatic
