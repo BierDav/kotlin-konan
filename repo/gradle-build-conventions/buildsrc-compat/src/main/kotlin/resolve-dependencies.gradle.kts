@@ -84,10 +84,12 @@ val resolveJsTools by tasks.registering {
                 val versionValue = version.get()
 
                 project.resolveDependencies(
-                    "com.github.webassembly:binaryen:$versionValue:arm64-macos@tar.gz",
                     "com.github.webassembly:binaryen:$versionValue:x86_64-linux@tar.gz",
+                    "com.github.webassembly:binaryen:$versionValue:arm64-linux@tar.gz",
+                    "com.github.webassembly:binaryen:$versionValue:x86_64-windows@tar.gz",
+                    "com.github.webassembly:binaryen:$versionValue:arm64-windows@tar.gz",
                     "com.github.webassembly:binaryen:$versionValue:x86_64-macos@tar.gz",
-                    "com.github.webassembly:binaryen:$versionValue:x86_64-windows@tar.gz"
+                    "com.github.webassembly:binaryen:$versionValue:arm64-macos@tar.gz",
                 ) {
                     ivy {
                         name = "Binaryen-ResolveDependencies"
@@ -106,7 +108,9 @@ val resolveJsTools by tasks.registering {
 
                 project.resolveDependencies(
                     "org.nodejs:node:$versionValue:linux-x64@tar.gz",
+                    "org.nodejs:node:$versionValue:linux-arm64@tar.gz",
                     "org.nodejs:node:$versionValue:win-x64@zip",
+                    "org.nodejs:node:$versionValue:win-arm64@zip",
                     "org.nodejs:node:$versionValue:darwin-x64@tar.gz",
                     "org.nodejs:node:$versionValue:darwin-arm64@tar.gz"
                 ) {

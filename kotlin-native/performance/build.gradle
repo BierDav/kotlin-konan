@@ -128,15 +128,17 @@ defaultTasks 'konanRun'
 
 private static String getAnalyzerTargetName() {
     // Copy-pasted from tools/benchmarksAnalyzer/build.gradle.
-    String target = System.getProperty("os.name")
-    if (target == 'Linux') return 'linux'
-    if (target.startsWith('Windows')) return 'windows'
-    if (target.startsWith('Mac'))
-        if (System.getProperty("os.arch") == "aarch64")
-            return 'macosArm64'
-        else
-            return 'macosX64'
-    return 'unknown'
+    def target = System.getProperty("os.name")
+    def arch = System.getProperty("os.arch")
+
+    def archSuffix = arch == "aarch64" ? "Arm64" : "X64"
+
+    return switch (target) {
+        case { it.startsWith('Windows') } -> "windows${archSuffix}"
+        case { it.startsWith('Mac') } -> "macos${archSuffix}"
+        case "Linux" -> "linux${archSuffix}"
+        default -> "unknown"
+    }
 }
 
 private String findAnalyzerBinary() {

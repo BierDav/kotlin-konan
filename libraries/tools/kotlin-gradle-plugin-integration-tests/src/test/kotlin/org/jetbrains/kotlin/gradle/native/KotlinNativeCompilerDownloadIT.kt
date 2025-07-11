@@ -231,7 +231,11 @@ class KotlinNativeCompilerDownloadIT : KGPBaseTest() {
         ) {
             val os = OperatingSystem.current()
             val expectedNativeDependencies = when {
-                os.isMacOsX -> listOf("lldb-4-macos", "apple-llvm-20200714-macos-aarch64-essentials", "libffi-3.3-1-macos-arm64")
+                os.isMacOsX -> listOf(
+                    "lldb-4-macos",
+                    "apple-llvm-20200714-macos-aarch64-essentials",
+                    "libffi-3.3-1-macos-arm64"
+                )
                 os.isLinux -> listOf(
                     "x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2",
                     "lldb-4-linux",
@@ -276,10 +280,12 @@ class KotlinNativeCompilerDownloadIT : KGPBaseTest() {
                         sourceSets.commonMain.get().compileSource("class Main")
                     }
                     sourceSets.commonTest.dependencies {
-                        sourceSets.commonTest.get().compileSource("""
+                        sourceSets.commonTest.get().compileSource(
+                            """
                             @kotlin.test.Test
                             fun test() {}
-                        """)
+                        """
+                        )
                     }
                 }
             }

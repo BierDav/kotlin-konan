@@ -681,6 +681,17 @@ internal abstract class DefaultKotlinTargetContainerWithPresetFunctions @Inject 
             configure
         )
 
+    override fun mingwArm64(
+        name: String,
+        configure: KotlinNativeTargetWithHostTests.() -> Unit
+    ): KotlinNativeTargetWithHostTests =
+        configureOrCreate(
+            name,
+            @Suppress("DEPRECATION_ERROR")
+            presets.getByName("mingwArm64") as KotlinNativeTargetWithHostTestsPreset,
+            configure
+        )
+
 
     @Deprecated(DEPRECATED_TARGET_MESSAGE, level = DeprecationLevel.WARNING)
     override fun linuxArm32Hfp(

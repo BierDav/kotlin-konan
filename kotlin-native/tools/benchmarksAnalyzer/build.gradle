@@ -36,14 +36,16 @@ repositories {
 
 def getHostName() {
     def target = System.getProperty("os.name")
-    if (target == 'Linux') return 'linux'
-    if (target.startsWith('Windows')) return 'windows'
-    if (target.startsWith('Mac'))
-        if (System.getProperty("os.arch") == "aarch64")
-            return 'macosArm64'
-        else
-            return 'macosX64'
-    return 'unknown'
+    def arch = System.getProperty("os.arch")
+
+    def archSuffix = arch == "aarch64" ? "Arm64" : "X64"
+
+    return switch (target) {
+        case { it.startsWith('Windows') } -> "windows${archSuffix}"
+        case { it.startsWith('Mac') } -> "macos${archSuffix}"
+        case "Linux" -> "linux${archSuffix}"
+        default -> "unknown"
+    }
 }
 
 kotlin {
@@ -79,8 +81,10 @@ kotlin {
             kotlin.srcDir 'src/main/kotlin-js'
             kotlin.srcDir '../../endorsedLibraries/kotlinx.cli/src/main/kotlin-js'
         }
-        linuxMain { dependsOn nativeMain }
-        windowsMain { dependsOn nativeMain }
+        linuxX64Main { dependsOn nativeMain }
+        linuxArm64Main { dependsOn nativeMain }
+        windowsX64Main { dependsOn nativeMain }
+        windowsArm64Main { dependsOn nativeMain }
         macosX64Main { dependsOn nativeMain }
         macosArm64Main { dependsOn nativeMain }
     }
@@ -97,7 +101,7 @@ kotlin {
             }
         }
 
-        mingwX64('windows') {
+        mingwX64('windowsX64') {
             binaries.all {
                 linkerOpts = ["-L${getMingwPath()}/lib".toString()]
             }
@@ -108,10 +112,29 @@ kotlin {
             }
         }
 
-        linuxX64('linux') {
+        mingwArm64('windowsArm64') {
+            binaries.all {
+                linkerOpts = ["-L${getMingwPath()}/lib".toString()]
+            }
+            compilations.main.cinterops {
+                libcurl {
+                    includeDirs.headerFilterOnly "${getMingwPath()}/include"
+                }
+            }
+        }
+
+        linuxX64('linuxX64') {
             compilations.main.cinterops {
                 libcurl {
                     includeDirs.headerFilterOnly '/usr/include', '/usr/include/x86_64-linux-gnu'
+                }
+            }
+        }
+
+        linuxArm64('linuxArm64') {
+            compilations.main.cinterops {
+                libcurl {
+                    includeDirs.headerFilterOnly '/usr/include', '/usr/include/aarch64-linux-gnu'
                 }
             }
         }
@@ -138,7 +161,7 @@ kotlin {
             }
         }
 
-        configure([findByName('windows'), findByName('linux'), findByName('macosX64'), findByName('macosArm64')].findAll { it != null }) {
+        configure([findByName('windowsX64'), findByName('windowsArm64'), findByName('linuxX64'), findByName('linuxArm64'), findByName('macosX64'), findByName('macosArm64')].findAll { it != null }) {
             def isCurrentHost = (name == getHostName())
             compilations.all {
                 cinterops.all {

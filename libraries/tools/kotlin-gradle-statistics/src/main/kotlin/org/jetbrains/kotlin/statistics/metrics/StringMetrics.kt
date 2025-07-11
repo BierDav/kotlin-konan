@@ -49,6 +49,7 @@ enum class StringMetrics(val type: StringOverridePolicy, val anonymization: Stri
                 "macos_x64",
                 "macos_arm64",
                 "mingw_x64",
+                "mingw_arm64",
                 "wasm"
             )
         )

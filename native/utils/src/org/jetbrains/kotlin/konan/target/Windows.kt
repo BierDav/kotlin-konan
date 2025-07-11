@@ -20,12 +20,6 @@ class MingwConfigurablesImpl(target: KonanTarget, properties: Properties, depend
             WindowsSdkPartsProvider.Local -> WindowsKit.DefaultPath
         }
     }
-    override val msvc: Msvc by lazy {
-        when (windowsSdkPartsProvider) {
-            WindowsSdkPartsProvider.InternalServer -> createCustomMsvcPath(Paths.get(absolute(msvcParts)))
-            WindowsSdkPartsProvider.Local -> Msvc.DefaultPath
-        }
-    }
 
     private val windowsSdkPartsProvider by lazy {
         if (InternalServer.isAvailable) {
@@ -60,38 +54,6 @@ private fun createCustomWindowsKitPath(windowsKitParts: Path): WindowsKit.Custom
                     windowsKitParts.resolve("Include").resolve("ucrt")
             )
     )
-}
-
-private fun createCustomMsvcPath(msvcParts: Path): Msvc.CustomPath {
-    return Msvc.CustomPath(
-            libraryDirectories = listOf(
-                    msvcParts.resolve("lib").resolve("x64")
-            ),
-            includeDirectories = listOf(
-                    msvcParts.resolve("include")
-            )
-    )
-}
-
-sealed class Msvc {
-
-    abstract fun compilerFlags(): List<String>
-
-    object DefaultPath : Msvc() {
-        override fun compilerFlags(): List<String> = emptyList()
-    }
-
-    class CustomPath(
-            private val includeDirectories: List<Path>,
-            private val libraryDirectories: List<Path>
-    ) : Msvc() {
-        // Note that this approach doesn't exclude default VS path.
-        // TODO: A better (but harder) way would be LIB environment variable.
-        override fun compilerFlags(): List<String> =
-                includeDirectories.flatMap { listOf("-isystem", it.toAbsolutePath().toString()) } +
-                        libraryDirectories.flatMap { listOf("-L", it.toAbsolutePath().toString()) }
-
-    }
 }
 
 sealed class WindowsKit {

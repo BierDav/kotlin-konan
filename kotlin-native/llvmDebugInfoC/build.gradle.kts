@@ -30,11 +30,11 @@ val library = lib("debugInfo")
 native {
     val obj = if (HostManager.hostIsMingw) "obj" else "o"
     val cxxStandard = 17
-    val llvmIncludeDir = "${llvmDir}/include"
+//    val llvmIncludeDir = "${llvmDir}/include"
 
     val cxxflags = mutableListOf(
         "--std=c++${cxxStandard}",
-        "-I${llvmIncludeDir}",
+//        "-I${llvmIncludeDir}",
         "-I${projectDir}/src/main/include"
     )
     suffixes {
@@ -66,7 +66,6 @@ native {
                 
                 set(CMAKE_CXX_STANDARD ${cxxStandard})
 
-                include_directories(${llvmIncludeDir})
                 include_directories(src/main/include)
                 
                 add_library(
@@ -74,6 +73,7 @@ native {
                         src/main/cpp/DebugInfoC.cpp
                 )
                 """.trimIndent()
+//                include_directories(${llvmIncludeDir})
             )
         }
     }
