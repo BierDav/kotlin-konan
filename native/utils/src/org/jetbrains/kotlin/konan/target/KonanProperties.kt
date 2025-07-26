@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.konan.target.Configurables
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.util.*
 import java.io.File
+import java.util.logging.Logger
 
 interface TargetableExternalStorage {
     fun targetString(key: String): String?
@@ -40,7 +41,6 @@ abstract class KonanPropertiesLoader(
     private val host: KonanTarget = HostManager.host,
     private val progressCallback: ProgressCallback,
 ) : Configurables {
-
 
     private val predefinedLlvmDistributions: Set<String> =
         properties.propertyList("predefinedLlvmDistributions").toSet()

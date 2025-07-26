@@ -54,12 +54,12 @@ nativeInteropPlugin {
         }
     })
     additionalLinkedStaticLibraries.set(buildList {
-//        val libclang = if (HostManager.hostIsMingw) {
-//            "lib/libclang.lib"
-//        } else {
-//            "lib/${System.mapLibraryName("clang")}"
-//        }
-//        add("${nativeDependencies.llvmPath}/$libclang")
+        val libclang = if (HostManager.hostIsMingw) {
+            "lib/libclang.lib"
+        } else {
+            "lib/${System.mapLibraryName("clang")}"
+        }
+        add("${nativeDependencies.llvmPath}/$libclang")
         if (PlatformInfo.isMac()) {
             listOf(
                     "clangAST", "clangASTMatchers", "clangAnalysis", "clangBasic", "clangDriver", "clangEdit",

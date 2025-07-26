@@ -33,7 +33,7 @@ native {
     val obj = if (isWindows) "obj" else "o"
     val cxxflags = mutableListOf("--std=c++17", "-g",
                           "-Isrc/main/include",
-//                          "-I$llvmDir/include",
+                          "-I$llvmDir/include",
                           "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING=1")
     if (PlatformInfo.isMac()) {
         cxxflags += "-DLIBCLANGEXT_ENABLE=1"
@@ -50,6 +50,7 @@ native {
         }
     }
     val objSet = sourceSets["main"]!!.transform(".cpp" to ".$obj")
+    logger.warn(hostPlatform.configurables.target.name)
     target(library, objSet) {
         tool(*hostPlatform.clangForJni.llvmAr("").toTypedArray())
         flags("-qcv", ruleOut(), *ruleInAll())
