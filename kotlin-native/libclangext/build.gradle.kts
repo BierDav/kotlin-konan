@@ -50,7 +50,6 @@ native {
         }
     }
     val objSet = sourceSets["main"]!!.transform(".cpp" to ".$obj")
-    logger.warn(hostPlatform.configurables.target.name)
     target(library, objSet) {
         tool(*hostPlatform.clangForJni.llvmAr("").toTypedArray())
         flags("-qcv", ruleOut(), *ruleInAll())

@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.konan.target
 
+import com.sun.org.slf4j.internal.Logger
 import org.jetbrains.kotlin.konan.properties.*
 
 interface RelocationModeFlags : TargetableExternalStorage {
@@ -75,7 +76,10 @@ interface Configurables : TargetableExternalStorage, RelocationModeFlags {
     val targetToolchain get() = hostTargetString("targetToolchain")
 
     val absoluteTargetSysRoot get() = absolute(targetSysRoot)
-    val absoluteTargetToolchain get() = absolute(targetToolchain)
+    val absoluteTargetToolchain: String
+        get() {
+            return absolute(targetToolchain)
+        }
     val absoluteLlvmHome get() = absolute(llvmHome)
 
     val targetCpu get() = targetString("targetCpu")
