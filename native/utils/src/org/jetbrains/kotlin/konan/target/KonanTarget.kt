@@ -30,6 +30,7 @@ sealed class KonanTarget(override val name: String, val family: Family, val arch
     object TVOS_SIMULATOR_ARM64 : KonanTarget("tvos_simulator_arm64", Family.TVOS, Architecture.ARM64)
     object LINUX_X64 : KonanTarget("linux_x64", Family.LINUX, Architecture.X64)
     object MINGW_X64 : KonanTarget("mingw_x64", Family.MINGW, Architecture.X64)
+    object MINGW_ARM64 : KonanTarget("mingw_arm64", Family.MINGW, Architecture.ARM64)
     object MACOS_X64 : KonanTarget("macos_x64", Family.OSX, Architecture.X64)
     object MACOS_ARM64 : KonanTarget("macos_arm64", Family.OSX, Architecture.ARM64)
     object LINUX_ARM64 : KonanTarget("linux_arm64", Family.LINUX, Architecture.ARM64)
